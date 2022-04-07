@@ -1,0 +1,35 @@
+gatewayProxies:
+  gatewayProxy:
+    gatewaySettings:
+      useProxyProto: true
+      customHttpGateway:
+        options:
+          httpConnectionManagerSettings:
+            useRemoteAddress: true              
+      options:
+        accessLoggingService:
+          accessLog:
+            - fileSink:
+                path: /dev/stdout
+                jsonFormat:
+                  startTime: "%START_TIME%"
+                  requestMethod: "%REQ(:METHOD)%"
+                  requestPath: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                  protocol: "%PROTOCOL%"
+                  responseCode: "%RESPONSE_CODE%"
+                  responseFlags: "%RESPONSE_FLAGS%"
+                  bytesRecieved: "%BYTES_RECEIVED%"
+                  bytesSent: "%BYTES_SENT%"
+                  duration: "%DURATION%"
+                  upstreamServiceTime: "%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%"
+                  xForwardedFor: "%REQ(X-FORWARDED-FOR)%"
+                  userAgent: "%REQ(USER-AGENT)%"
+                  requestId: "%REQ(X-REQUEST-ID)%"
+                  traceID: "%REQ(X-AMZN-TRACE-ID)%"
+                  upstreamHost: "%UPSTREAM_HOST%"
+                  downstreamRemoteAddress: "%DOWNSTREAM_REMOTE_ADDRESS%"
+                  gatewayProxyHost: "%HOSTNAME%"
+                  hostName: "%REQ(:AUTHORITY)%"
+    service:
+      type: ClusterIP
+      name: gateway-proxy
